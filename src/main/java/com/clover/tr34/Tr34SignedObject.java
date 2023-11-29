@@ -54,8 +54,8 @@ public abstract class Tr34SignedObject extends Tr34Object {
             innerCerts = new DLSet(new ASN1Encodable[] { ASN1Primitive.fromByteArray(cert.getEncoded()) });
         }
 
-        ASN1OctetString dataOctectString = new DEROctetString(data);
-        ContentInfo innerCi = new ContentInfo(CMSObjectIdentifiers.data, dataOctectString);
+        ASN1OctetString dataOctetString = new DEROctetString(data);
+        ContentInfo innerCi = new ContentInfo(CMSObjectIdentifiers.data, dataOctetString);
         ASN1Set emptySet = new DLSet(new ASN1Encodable[0]);
         return new SignedData(emptySet, innerCi, innerCerts, emptySet, emptySet);
     }
@@ -83,7 +83,6 @@ public abstract class Tr34SignedObject extends Tr34Object {
 
     protected static byte[] encryptForRecipient(X509Certificate recipientCert, byte[] dataToDecrypt) throws Exception {
         // Generate inner EnvelopedData
-
         OAEPParameterSpec oaepParamSpec = new OAEPParameterSpec("SHA-256", "MGF1",
                 MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT);
         JcaAlgorithmParametersConverter paramsConv = new JcaAlgorithmParametersConverter();

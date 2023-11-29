@@ -65,7 +65,6 @@ public final class Tr34KeyBlock extends Tr34Object {
     }
 
     public Tr34KeyBlock(ASN1Sequence asn1) {
-
         if (asn1.size() != 4) {
             throw new Tr34Exception("Invalid key block content");
         }

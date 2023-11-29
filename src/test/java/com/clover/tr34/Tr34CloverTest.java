@@ -66,11 +66,10 @@ public class Tr34CloverTest {
         X509Certificate krdCert = Tr34CryptoUtils.parseCert(CloverDevTr34KeyStoreData.TR34_KRD_1_Cert_Pem);
         PrivateKey krdPrivateKey = Tr34CryptoUtils.parsePrivateKey(CloverDevTr34KeyStoreData.TR34_KRD_1_PrivateKey_Pem);
 
+        // Step 2: generate a response
         String header = Tr34KeyBlockHeaderFactory.createHeaderForAesTr31Kbk();
         byte[] symmetricAesKey = new byte[16];
         Tr34KeyBlock newKeyBlock = Tr34KeyBlock.create(header, symmetricAesKey, trustStore.getKdhCert());
-
-        // Step 2: generate a response
         Tr34TwoPassKeyToken resp = Tr34TwoPassKeyToken.create(req, krdCert, newKeyBlock, trustStore.getKdhKeyStoreData());
 
         // Step 3: verify the response
