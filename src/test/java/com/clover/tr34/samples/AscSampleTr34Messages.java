@@ -94,4 +94,9 @@ public final class AscSampleTr34Messages {
     public static final String SAMPLE_RBT_CA_PEM =
             "redacted";
 
+    /**
+     * B.7 CTKRD - The KRD Credential Token
+     */
+    public static final String SAMPLE_CT_KRD_PEM =
+            "redacted";
 }

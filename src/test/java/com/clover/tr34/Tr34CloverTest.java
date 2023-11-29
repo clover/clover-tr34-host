@@ -58,7 +58,7 @@ public class Tr34CloverTest {
     }
 
     @Test
-    public void cloverTwoPassKeyTokenCreate() throws Exception {
+    public void cloverGenerateTwoPassKeyToken() throws Exception {
         Tr34KeyStoreData trustStore = CloverDevTr34KeyStoreData.KDH_1;
 
         // Step 1: create a request
@@ -132,8 +132,14 @@ public class Tr34CloverTest {
     }
 
     @Test
+    public void cloverGenerateKrdCredentialToken() {
+        X509Certificate krdCert = Tr34CryptoUtils.parseCert(CloverDevTr34KeyStoreData.TR34_KRD_1_Cert_Pem);
+        Tr34KrdCredentialToken ct = Tr34KrdCredentialToken.create(krdCert);
+    }
+
+    @Test
     public void cloverParseKrdCredentialToken() {
-        Tr34KrdCredentialToken.create(CloverSampleTr34Messages.CT_KRD_Pem);
+        Tr34KrdCredentialToken ct = Tr34KrdCredentialToken.create(CloverSampleTr34Messages.CT_KRD_Pem);
     }
 
 }

@@ -45,7 +45,7 @@ public class Tr34AscX9Test {
     @Test
     public void ascSampleCheckKdhBindToken() throws Exception {
         // Despite the name this CMS is not actually signed
-        new CMSSignedData(Tr34CryptoUtils.pemToDer(AscSampleTr34Messages.SAMPLE_CT_KDH_PEM));
+        Tr34KdhCredentialToken.create(Tr34CryptoUtils.pemToDer(AscSampleTr34Messages.SAMPLE_CT_KDH_PEM));
     }
 
     @Test
@@ -140,8 +140,9 @@ public class Tr34AscX9Test {
     public void ascSampleBindParse() throws Exception {
         CMSSignedData csd = new CMSSignedData(Tr34CryptoUtils.pemToDer(AscSampleTr34Messages.SAMPLE_CT_KDH_PEM));
 
-        System.out.println("csd=" + csd);
-        new Asn1TreePrinter(Tr34CryptoUtils.decodeToAsn1(AscSampleTr34Messages.SAMPLE_CT_KDH_PEM)).print();
+        if (false) {
+            new Asn1TreePrinter(csd.toASN1Structure()).print();
+        }
 
         Collection<X509CertificateHolder> holders = csd.getCertificates().getMatches(new Selector<X509CertificateHolder>() {
             @Override
@@ -191,12 +192,12 @@ public class Tr34AscX9Test {
     @Ignore("Malformed sample")
     @Test
     public void ascSampleRebindParse() throws Exception {
-        Tr34KdhRebindToken.create(AscSampleTr34Messages.SAMPLE_REBIND_KDH_TOKEN_PEM);
+        Tr34KdhRebindToken rbt = Tr34KdhRebindToken.create(AscSampleTr34Messages.SAMPLE_REBIND_KDH_TOKEN_PEM);
     }
 
     @Test
     public void ascSampleCaUnbindParse() throws Exception {
-        Tr34CaUnbindToken.create(AscSampleTr34Messages.SAMPLE_UBT_CA_PEM);
+        Tr34CaUnbindToken ubt = Tr34CaUnbindToken.create(AscSampleTr34Messages.SAMPLE_UBT_CA_PEM);
     }
 
     /**
@@ -206,6 +207,11 @@ public class Tr34AscX9Test {
     @Test
     public void ascSampleCaReindParse() throws Exception {
         Tr34CaRebindToken.create(AscSampleTr34Messages.SAMPLE_RBT_CA_PEM);
+    }
+
+    @Test
+    public void ascSampleCredentialTokenParse() throws Exception {
+        Tr34KrdCredentialToken ct = Tr34KrdCredentialToken.create(AscSampleTr34Messages.SAMPLE_CT_KRD_PEM);
     }
 
 }

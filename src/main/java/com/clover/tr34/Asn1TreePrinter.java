@@ -2,6 +2,7 @@ package com.clover.tr34;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -61,29 +62,35 @@ public final class Asn1TreePrinter {
     }
 
     private void printIndent() {
-        System.out.println();
         for (int i = 0; i < indent; i++) {
             System.out.print(" ");
         }
     }
 
     private void print(ASN1Encodable obj) {
+        System.out.println();
         printIndent();
+        indent += 2;
+        printNoIndent(obj);
+        indent -= 2;
+    }
+
+    private void printNoIndent(ASN1Encodable obj) {
         System.out.print(obj.getClass().getSimpleName());
 
         if (obj instanceof ASN1String) {
             ASN1String as = (ASN1String) obj;
-            System.out.print(" string(\"" + as.getString() + "\")");
-        }
-
-        indent += 2;
-
-        if (obj instanceof ASN1Sequence) {
-            for (ASN1Encodable asn1Encodable : (ASN1Sequence) obj) {
+            System.out.print(" string (\"" + as.getString() + "\")");
+        } else if (obj instanceof ASN1Sequence) {
+            ASN1Sequence seq = (ASN1Sequence) obj;
+            System.out.print(" size (" + seq.size() + ")");
+            for (ASN1Encodable asn1Encodable : seq) {
                 print(asn1Encodable);
             }
         } else if (obj instanceof ASN1Set) {
-            for (ASN1Encodable asn1Encodable : (ASN1Set) obj) {
+            ASN1Set set = (ASN1Set) obj;
+            System.out.print(" size (" + set.size() + ")");
+            for (ASN1Encodable asn1Encodable : set) {
                 print(asn1Encodable);
             }
         } else if (obj instanceof ASN1TaggedObject) {
@@ -117,10 +124,13 @@ public final class Asn1TreePrinter {
             } catch (ParseException e) {
                 System.out.print(" utctime (parse err)");
             }
+        } else if (obj instanceof ASN1Object) {
+            ASN1Encodable e = obj.toASN1Primitive();
+            if (e instanceof ASN1Sequence || e instanceof ASN1Set) {
+                System.out.print(" ");
+                printNoIndent(e);
+            }
         }
-
-        indent -=2;
     }
-
 
 }

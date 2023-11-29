@@ -20,7 +20,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-debug-jdk15to18</artifactId>
-      <version>1.76</version>
+      <version>1.77</version>
       <exclusions>
         <exclusion>
           <groupId>org.bouncycastle</groupId>
@@ -36,13 +36,13 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-debug-jdk15to18</artifactId>
-      <version>1.76</version>
+      <version>1.77</version>
     </dependency>
 
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcutil-debug-jdk15to18</artifactId>
-      <version>1.76</version>
+      <version>1.77</version>
       <exclusions>
         <exclusion>
           <groupId>org.bouncycastle</groupId>

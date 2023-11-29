@@ -17,9 +17,6 @@ import java.util.List;
 /**
  * Some of the samples appear to be non-conforming to standards such as DER and X.509.
  * Instances of this class are currently populated just enough to run some basic tests.
- * <p>
- * <b>ALL SAMPLES ARE REDACTED FOR COPYRIGHT</b>. Purchase a copy of the TR-34
- * specification and paste the corresponding PEM strings to test.
  */
 public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
 
