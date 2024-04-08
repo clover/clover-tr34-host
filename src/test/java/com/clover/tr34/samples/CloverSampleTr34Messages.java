@@ -1,5 +1,9 @@
 package com.clover.tr34.samples;
 
+/**
+ * Sample messages for test that correspond to the certificates and keys found
+ * in {@link CloverSampleTr34KeyStoreData}.
+ */
 public final class CloverSampleTr34Messages {
 
     /**

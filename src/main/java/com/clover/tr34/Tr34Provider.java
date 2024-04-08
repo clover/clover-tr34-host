@@ -13,7 +13,8 @@ import org.bouncycastle.jcajce.provider.asymmetric.x509.CertificateFactory;
 import java.security.Provider;
 
 /**
- * Helper class to get a Java security provider with functionality necessary for TR-34.
+ * Helper class to get a Java security provider with functionality necessary for TR-34, currently
+ * supplied by Bouncy Castle.
  */
 public final class Tr34Provider {
 

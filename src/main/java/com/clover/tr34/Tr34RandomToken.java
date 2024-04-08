@@ -26,11 +26,11 @@ public class Tr34RandomToken extends Tr34Object {
         this.rootNode = asn1;
     }
 
-    public static Tr34RandomToken create(Object encoded) {
+    public static Tr34RandomToken decode(Object encoded) {
         return new Tr34RandomToken((ASN1Sequence) Tr34CryptoUtils.decodeToAsn1(encoded));
     }
 
-    public static Tr34RandomToken createFromNonce(byte[] nonce) {
+    public static Tr34RandomToken create(byte[] nonce) {
         ASN1OctetString random = new DEROctetString(nonce);
         ASN1Set set = new DLSet(random);
         return new Tr34RandomToken(new DLSequence(new ASN1Encodable[] { Tr34ObjectIdentifiers.randomNonce, set }));
@@ -39,7 +39,7 @@ public class Tr34RandomToken extends Tr34Object {
     public static Tr34RandomToken createNewRandom() {
         byte[] nonce = new byte[16];
         sRand.nextBytes(nonce);
-        return createFromNonce(nonce);
+        return create(nonce);
     }
 
     public ASN1OctetString getRandomNumber() {

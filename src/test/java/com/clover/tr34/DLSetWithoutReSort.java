@@ -4,7 +4,9 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.DLSet;
 
 /**
- * Bouncy castle resorts DLSets when encoding, this is a hack to not do that.
+ * Bouncy castle resorts DLSets when encoding CMS as the standard indicates is
+ * required, this is a hack to not do that to allow some ASC X9 TR34-2019
+ * samples to be verified.
  */
 public class DLSetWithoutReSort extends DLSet {
 

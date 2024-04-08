@@ -12,9 +12,12 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Sample certificates and keys taken from X9 ASC TR34-2019 documentation.
+ * <p>
  * Some of the samples appear to be non-conforming to standards such as DER and X.509.
  * Instances of this class are currently populated just enough to run some basic tests.
  */
@@ -113,6 +116,35 @@ public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
             "C1gvjNMu6DCl1aTjAzp6QV/rkYG+1Lk91eN8BF5jKBPOQMScrA==\n" +
             "-----END CERTIFICATE-----";
 
+    public static final String SAMPLE_KDH_1_PRIVATE_KEY_PEM = "-----BEGIN PRIVATE KEY-----\n" +
+            "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDD648pBL7Lb5Hv\n" +
+            "yjjbt13ZGTHKj+IRZj9Ib8q6B6DC7YfLUobFCNotHw7e3cCn21xgXby5q3PRYbsa\n" +
+            "DxsO5VV4D697yrpeBt/viJ5R9o/mXcIa8AA6hvFwbkYeFQK+pFh3uuICZY+8ouvt\n" +
+            "VpIBhjV/cU5b7slwoeqICKn0Ji8vZEOCedh8ZMF+ObpxMPR7SqRBNkP4aphio1rZ\n" +
+            "Nz2OLSjFksilIXMbqVyORDJ6uw7OUL+ubOjq9JNOlIxqO4vr4mimknvIfhrnktUx\n" +
+            "UzmbS4KILJp55DHRDc5YQHBTuSv21tZyKbtyquAQgn5xJtdXBAbKqp9NtPKMS9ZK\n" +
+            "nvyYoOrNAgMBAAECggEAduG92b72Yw1NOXq0q6YFfVGLZAWQwMwRREwJcH5mb0Gg\n" +
+            "r6BhBLhNYynAZT2bxH8X+6WFeghuW7P4y2Q1IAHKrfKeofguxBVZ1shIgSWixb9I\n" +
+            "o/3Tta/iWz2esGxBYRrqT6SHtbqY0Hbvv/FS4TflyHIhgSlQ9FZbsLXJIsv0v8T/\n" +
+            "G+lpsa9pNgTFzI+oTpFQLSWAmTy7pmHAtjckX8V0IynWkdSYQ70MLOYeUsMFDMQq\n" +
+            "WL9vOozA1BkVIk82OfJbd7x69MylHvAslblFjaRphka2VGPRACRxjH0W7iyuLUP/\n" +
+            "ldonALKZKuFOIPvEjXMU/DJzxAG7JlWfncyEe41/RQKBgQD2x7Md9KPd+HPpVsCT\n" +
+            "vZva56sKlg8JvgcYFeLqUdMF9QyKIDzLdZFpWsk9vmzFLVNABhWnIQkcu4gNqe/z\n" +
+            "obTUJEvHGaCpyub8hC8kNdQ7FbH53T2S69VtwIzNZl70qHNfCbIpjf+RGsZk5QCG\n" +
+            "XUbNjDmPLaKFoQbdBQT0qYVeowKBgQDLPWpfVGGtx5BmTZNVmJ/hAS9PqoNwL7wq\n" +
+            "GD9UIzb7PUD/bWUvc75uQrqVMoqH62MTQdGTd8O42XMqUHyRY0LfaJjryu26rrKV\n" +
+            "RRr/nMby0L3lNZD2YZpLLOs3EK8UTk3A83X2IesIuusyTDt/qKyRJxB0qCAUEXiT\n" +
+            "t7ZATOBXzwKBgHLVOmQWEqqXklhiJfqZoIycgNrMOPMvmd17Ubv3l1qOTOd5WNDU\n" +
+            "RHXh6QLyOWsHTFXefvTmSnc0THsPOLkF5j9RJHHhWwGniRS37bfL1JYp4keCy8Qy\n" +
+            "OX54uwxZNpZiTE1NFbqAeQvsiaUparUbcnbzaVVWxumnpKn0S/oNaCJBAoGAfA4h\n" +
+            "1syHzu5IStnBO/csZ8g0W7ll/11zynIAfdf84IA0I3Vf1QYeT+k1QIqYGnzofcGo\n" +
+            "Lg5ljnhUnpiAYLIpCHstFIhKca/e29RRtYK5wU7/CmCW+nz7FDX34SWy6H8fYM56\n" +
+            "y2FKuIp3s7zqeHK52uPwXHSfGADOC8SQX1FNgusCgYEAn9iVx8wnQqmbD8lwWDh6\n" +
+            "L6vjKEpjuy76P9Jnp1cGgV15rG1UzOLYNtwB7dDVWH8wfOICLHbO91J9FN7h+SV+\n" +
+            "ZFqArTbwa7QeH+xpYXuJ0a1H13994ynWb2l6OnyChNSqeqslTZgtiHVCy10G/+N0\n" +
+            "ofXkAMX7ejLOcHphTyLAHdY=\n" +
+            "-----END PRIVATE KEY-----";
+
     // B.4 CAKDH – Certificate Authority – KDH Certificate
     public static final String SAMPLE_CA_KDH_CERT_PEM = "-----BEGIN CERTIFICATE-----\n" +
             "MIIDPjCCAiagAwIBAgIFNAAAAAUwDQYJKoZIhvcNAQELBQAwPzELMAkGA1UEBhMC\n" +
@@ -135,6 +167,27 @@ public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
             "7N32YnGn+yrjDPjVgXyDVt+D\n" +
             "-----END CERTIFICATE-----";
 
+    public static final String SAMPLE_CA_KRD_CERT_PEM = "-----BEGIN CERTIFICATE-----\n" +
+            "MIIDPjCCAiagAwIBAgIFNAAAAAYwDQYJKoZIhvcNAQELBQAwPzELMAkGA1UEBhMC\n" +
+            "VVMxFTATBgNVBAoTDFRSMzQgU2FtcGxlczEZMBcGA1UEAxMQVFIzNCBTYW1wbGUg\n" +
+            "Um9vdDAeFw0xMDExMDIwMDAwMDBaFw0yNTEwMjgyMzU5NTlaMEExCzAJBgNVBAYT\n" +
+            "AlVTMRUwEwYDVQQKEwxUUjM0IFNhbXBsZXMxGzAZBgNVBAMTElRSMzQgU2FtcGxl\n" +
+            "IENBIEtSRDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPv35H8/s7H0\n" +
+            "1BV+yYpfxYVMNClfxriHb0BbDjftnT5aTOmWHBOkRzDk6Jeqkna9IDDzRSO6mVfw\n" +
+            "VnugU6k07JWSPrOQXvrhnKADkXjJwfCEaD4lJwpzVhbkuhSlXfyTv6yECHoivCkH\n" +
+            "GDAzSL4XosYBWUX9mhRwXXxDupSA12I/u0aNJLYSBGb58Ifj14m4Kikc4Xi5yK/j\n" +
+            "AYSny4dpYg9OzG0hK0U49G6aF4qyy+esrs8dkRZO0O9ZM0BEfnhQ/315PcSFEohO\n" +
+            "IOCd6oAJCWOEdjW+0+khdN+pgjhB0O+JEtwie6MMaBMzaEbZQSSNwNTw4tJZZYJY\n" +
+            "7RoCGEcp4tsCAwEAAaM/MD0wDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUEjhu\n" +
+            "z7ambtrb/wlvZbvVsFD5zA0wCwYDVR0PBAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IB\n" +
+            "AQBrI0JF1yANFBgdYHrGznNY2XXSPaMD8h9UuN6696aIy1zlBSIySt2S0LgTMXq9\n" +
+            "lhrUHRB1djmoyNYYXczI3wY+C11JBrIfrkEWHJE3UxqJyxGY9yHlV6SqeqKMnoaZ\n" +
+            "g/BsaUMTTKAlOShoOt4TNk6/wiSqfh28IL2HkW7vvwDaIC8PRt5u/GF4440smsNv\n" +
+            "yYt9+sFAsjlimsVh4oT1bQmuGoeO6QB+EFmXxddNGsf5cDx4KyQlGPFzMJu5ugCo\n" +
+            "d6R4IvyFnh49YV9V0QoMWYhHP6WEhmc2P66kp2EpVlqweY1+3hoYulS2AClszjYz\n" +
+            "IoRAf/W3NJh9YlwyHkAAT2Xh\n" +
+            "-----END CERTIFICATE-----";
+
     private final X509Certificate rootCert;
     private final X509Certificate krdCaCert;
     private final X509Certificate kdhCaCert;
@@ -144,7 +197,9 @@ public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
     private final PrivateKey kdhCaPrivateKey;
     private final PrivateKey kdhPrivateKey;
 
-    private AscSampleTr34KeyStoreData(String kdhCertPem, String kdhPrivateKeyPem) {
+    private final List<X509Certificate> kdhIssuerChain;
+
+    private AscSampleTr34KeyStoreData(String kdhCertPem, String kdhPrivateKeyPem, String... kdhIssuerChainPem) {
         kdhCert = Tr34CryptoUtils.parseCert(kdhCertPem);
         if (kdhPrivateKeyPem != null) {
             kdhPrivateKey = Tr34CryptoUtils.parsePrivateKey(kdhPrivateKeyPem);
@@ -158,10 +213,19 @@ public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
 
         kdhCaPrivateKey = null;
         krdCaPrivateKey = Tr34CryptoUtils.parsePrivateKey(SAMPLE_KRD_1_PRIVATE_KEY_PEM);
+
+        List<X509Certificate> chain = new LinkedList<>();
+        for (String certPem : kdhIssuerChainPem) {
+            chain.add(Tr34CryptoUtils.parseCert(certPem));
+        }
+
+        kdhIssuerChain = Collections.unmodifiableList(chain);
+
+        verifyKdh();
     }
 
     public static final Tr34KeyStoreData KDH_1 =
-            new AscSampleTr34KeyStoreData(SAMPLE_KDH_1_CERT_PEM, null);
+            new AscSampleTr34KeyStoreData(SAMPLE_KDH_1_CERT_PEM, SAMPLE_KDH_1_PRIVATE_KEY_PEM, SAMPLE_CA_KDH_CERT_PEM, SAMPLE_ROOT_CERT_PEM);
 
     @Override
     public X509Certificate getRootCert() {
@@ -169,8 +233,8 @@ public class AscSampleTr34KeyStoreData extends Tr34KeyStoreData {
     }
 
     @Override
-    public X509Certificate getKdhCaCert() {
-        return kdhCaCert;
+    public List<X509Certificate> getKdhIssuerChain() {
+        return kdhIssuerChain;
     }
 
     @Override

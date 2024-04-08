@@ -44,7 +44,7 @@ public final class Tr34KeyBlock extends Tr34Object {
      */
     public static final long VERSION_1 = 1;
 
-    public static Tr34KeyBlock create(Object encoded) {
+    public static Tr34KeyBlock decode(Object encoded) {
         return new Tr34KeyBlock((ASN1Sequence) Tr34CryptoUtils.decodeToAsn1(encoded));
     }
 

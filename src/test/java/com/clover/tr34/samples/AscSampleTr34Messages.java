@@ -2,10 +2,12 @@ package com.clover.tr34.samples;
 
 /**
  * Samples from ASC X9 TR34 2019 standards document and errata document.
- * Warning: samples are not totally reliable
  * <p>
  * <b>ALL SAMPLES ARE REDACTED FOR COPYRIGHT</b>. Purchase a copy of the TR-34
  * specification and paste the corresponding PEM strings to test.
+ * <p>
+ * Warning: samples are not totally reliable, see docs for each sample for
+ * details.
  */
 public final class AscSampleTr34Messages {
 
@@ -19,14 +21,16 @@ public final class AscSampleTr34Messages {
      * ASC X9 TR 34-2019 Corrigendum (Errata)
      * B.9.1 2 Pass Key Token
      * <p>
-     * BouncyCastle CMS verify doesn't work on this sample:
+     * BouncyCastle CMS verify doesn't work on this sample for several reasons:
      * <br>
      * See <a href="https://github.com/bcgit/bc-java/issues/1484">bc-java issue 1484</a>
      * <br>
      * See <a href="https://github.com/openssl/openssl/issues/22120">openssl issue 22120</a>
      * <p>
-     * Furthermore, something is wrong with the encryption, bouncy castle fails with
-     * the error "Not a valid OAEP Parameter encoding".
+     * Furthermore, something the RSA OAEP params are not encoded in the ASN.1 form specified in
+     * RFC 8017 section A.2.1 titled "RSAES-OAEP", even after correcting the params there is
+     * something wrong with the encryption and both OpenJDK and Bouncy Castle crypto providers
+     * fail when trying to decrypt it.
      */
     public static final String SAMPLE_KDH_KT_2_PASS_FOR_KRD_1_CMS =
             "redacted";

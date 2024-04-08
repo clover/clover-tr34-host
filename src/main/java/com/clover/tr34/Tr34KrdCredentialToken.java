@@ -38,7 +38,7 @@ public class Tr34KrdCredentialToken extends Tr34SignedObject {
         }
     }
 
-    public static Tr34KrdCredentialToken create(Object encoded) {
+    public static Tr34KrdCredentialToken decode(Object encoded) {
         try {
             CMSSignedData csd;
             if (encoded instanceof CMSSignedData) {

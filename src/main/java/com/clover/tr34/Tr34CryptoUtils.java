@@ -1,6 +1,5 @@
 package com.clover.tr34;
 
-import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.cert.X509CRLHolder;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -8,23 +7,22 @@ import org.bouncycastle.cert.X509v2CRLBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509v2CRLBuilder;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
 import org.bouncycastle.crypto.util.OpenSSHPrivateKeyUtil;
-import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.ContentVerifierProvider;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaContentVerifierProviderBuilder;
 import org.bouncycastle.util.Selector;
 import org.bouncycastle.util.io.pem.PemReader;
-import org.bouncycastle.util.io.pem.PemWriter;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.CertPath;
 import java.security.cert.CertificateFactory;
+import java.security.cert.TrustAnchor;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -34,7 +32,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 /**
- * Helpful cryptography related utility methods for TR-34.
+ * Helpful cryptography related utility methods.
  */
 public final class Tr34CryptoUtils {
 
@@ -99,18 +97,38 @@ public final class Tr34CryptoUtils {
         }
     }
 
+    private static CertPath createCertPath(List<X509Certificate> chain) {
+        try {
+            return CertificateFactory.getInstance("X.509").generateCertPath(chain);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static void verifyCertificateChain(List<X509Certificate> chain, X509Certificate root) {
+        // If the root is included in the chain, remove it
+        int lastIndex = chain.size() - 1;
+        X509Certificate highestChainCert = chain.get(lastIndex);
+        if (highestChainCert.getPublicKey().equals(root.getPublicKey())) {
+            chain = new LinkedList<>(chain);
+            chain.remove(lastIndex);
+        }
+
+        TrustAnchor ta = new TrustAnchor(root, null);
+        new Tr34CertValidator(ta)
+                .withProvider(Tr34Provider.PROVIDER)
+                .withoutDateValidation()
+                .validate(createCertPath(chain));
+    }
+
+    public static void verifyCertificateChain(X509Certificate leafCert, List<X509Certificate> caList, X509Certificate root) {
+        LinkedList<X509Certificate> chain = new LinkedList<>(caList);
+        chain.addFirst(leafCert);
+        verifyCertificateChain(chain, root);
+    }
 
     public static void verifyCertificateChain(X509Certificate[] chain, X509Certificate root) {
-        if (!chain[chain.length - 1].equals(root)) {
-            throw new SecurityException("Root certificate mismatch");
-        }
-        try {
-            for (int i = 0; i < chain.length - 1; i++) {
-                chain[i].verify(chain[i + 1].getPublicKey());
-            }
-        } catch (Exception e) {
-            throw new SecurityException("Chain verification failed", e);
-        }
+        verifyCertificateChain(Arrays.asList(chain), root);
     }
 
     public static void verifyCrl(X509CRLHolder crl, X509Certificate crlSigner) {
@@ -149,26 +167,6 @@ public final class Tr34CryptoUtils {
         }
 
         throw new Tr34Exception("Unable to decode instances of " + encoded.getClass());
-    }
-
-    public static String encodeToPem(Object asn1) {
-        try {
-            StringWriter sw = new StringWriter();
-
-            if (asn1 instanceof Tr34Object) {
-                try (PemWriter pw = new PemWriter(sw)) {
-                    pw.writeObject(new Tr34PEMGenerator((ASN1Object) asn1).generate());
-                }
-            } else {
-                try (JcaPEMWriter jpw = new JcaPEMWriter(sw)) {
-                    jpw.writeObject(asn1);
-                }
-            }
-
-            return sw.toString();
-        } catch (IOException e) {
-            throw new Tr34Exception(e);
-        }
     }
 
     public static Date createHoursFromNowDate(long hoursFromNow) {

@@ -53,7 +53,7 @@ public class Tr34CaUnbindToken extends Tr34SignedObject {
         this.rootNode = csd;
     }
 
-    public static Tr34CaUnbindToken create(Object encoded) {
+    public static Tr34CaUnbindToken decode(Object encoded) {
         try {
             CMSSignedData csd;
             if (encoded instanceof CMSSignedData) {

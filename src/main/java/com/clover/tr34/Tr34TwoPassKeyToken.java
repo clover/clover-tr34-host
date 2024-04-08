@@ -1,6 +1,7 @@
 package com.clover.tr34;
 
 import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Sequence;
@@ -12,13 +13,28 @@ import org.bouncycastle.asn1.cms.EnvelopedData;
 import org.bouncycastle.asn1.cms.SignedData;
 import org.bouncycastle.asn1.cms.SignerInfo;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.cms.CMSAlgorithm;
+import org.bouncycastle.cms.CMSEnvelopedData;
+import org.bouncycastle.cms.CMSEnvelopedDataGenerator;
+import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.jcajce.JceCMSContentEncryptorBuilder;
+import org.bouncycastle.cms.jcajce.JceKeyTransRecipientInfoGenerator;
+import org.bouncycastle.operator.jcajce.JcaAlgorithmParametersConverter;
 
+import javax.crypto.spec.OAEPParameterSpec;
+import javax.crypto.spec.PSource;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
+import java.security.spec.MGF1ParameterSpec;
 
 /**
  * See B.9 KTKDH – The KDH Key Token
+ * <p>
+ * Currently, this implementation only encrypts with ephemeral key type AES 128, the standard allows
+ * for TDEA 168 but that is not implemented here.
  */
 public class Tr34TwoPassKeyToken extends Tr34SignedObject {
 
@@ -29,7 +45,7 @@ public class Tr34TwoPassKeyToken extends Tr34SignedObject {
     private final ASN1OctetString randomNonce;
     private final String keyBlockHeader;
 
-    public static Tr34TwoPassKeyToken create(Object encoded) {
+    public static Tr34TwoPassKeyToken decode(Object encoded) {
         try {
             return new Tr34TwoPassKeyToken((ASN1Sequence) Tr34CryptoUtils.decodeToAsn1(encoded));
         } catch (Exception e) {
@@ -55,6 +71,26 @@ public class Tr34TwoPassKeyToken extends Tr34SignedObject {
         CMSSignedData sd = signCmsData(at, CMSObjectIdentifiers.envelopedData, envelopedCryptData, kdhKeyStore);
 
         return (ASN1Sequence) ASN1Sequence.fromByteArray(sd.getEncoded());
+    }
+
+    protected static byte[] encryptForRecipient(X509Certificate recipientCert, byte[] dataToDecrypt) throws Exception {
+        // Generate inner EnvelopedData
+        OAEPParameterSpec oaepParamSpec = new OAEPParameterSpec("SHA-256", "MGF1",
+                MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT);
+        JcaAlgorithmParametersConverter paramsConv = new JcaAlgorithmParametersConverter();
+        AlgorithmIdentifier algoId = paramsConv.getAlgorithmIdentifier(PKCSObjectIdentifiers.id_RSAES_OAEP, oaepParamSpec);
+
+        JceKeyTransRecipientInfoGenerator recipInfo = new JceKeyTransRecipientInfoGenerator(recipientCert, algoId);
+
+        CMSEnvelopedDataGenerator edGen = new CMSEnvelopedDataGenerator();
+        edGen.addRecipientInfoGenerator(recipInfo);
+
+        JceCMSContentEncryptorBuilder contentEncBuilder = new JceCMSContentEncryptorBuilder(CMSAlgorithm.AES128_CBC);
+
+        CMSTypedData msg = new CMSProcessableByteArray(dataToDecrypt);
+        CMSEnvelopedData cmsEd = edGen.generate(msg, contentEncBuilder.build());
+        EnvelopedData ed = (EnvelopedData) cmsEd.toASN1Structure().getContent();
+        return ed.getEncoded(ASN1Encoding.DL);
     }
 
     static Tr34TwoPassKeyToken create(Tr34RandomToken request,
